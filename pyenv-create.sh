@@ -46,7 +46,7 @@ install_package python3-venv
 make_dir $ENV_PATH
 cd $ENVS_PATH
 
-export PYSLAM_PYTHON_VERSION="3.6.9"
+export PYSLAM_PYTHON_VERSION="3.7"
 
 # actually create the virtual environment 
 if [ ! -d $ENV_PATH/bin ]; then 
@@ -79,7 +79,7 @@ MAKEFLAGS="$MAKEFLAGS_OPTION" CMAKE_ARGS="$CMAKE_ARGS_OPTION" pip3 install openc
 
 #source install_pip3_packages.sh 
 # or 
-MAKEFLAGS="$MAKEFLAGS_OPTION" pip3 install -r requirements-pip3.txt -vvv
+MAKEFLAGS="$MAKEFLAGS_OPTION" pip3 install -r requirements-arm-python37.txt -vvv
 
 # HACK to fix opencv-contrib-python version!
 #pip3 uninstall opencv-contrib-python                # better to clean it before installing the right version 
