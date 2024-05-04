@@ -114,10 +114,10 @@ if [ ! -d g2opy ]; then
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
         sudo apt-get install -y libsuitesparse-dev libeigen3-dev
     fi     
-	git clone https://github.com/uoip/g2opy.git
+    git clone https://github.com/anathonic/g2opy.git
     cd g2opy
-    G2OPY_REVISION=5587024
-    git checkout $G2OPY_REVISION
+    G2OPY_REVISION=340a44d
+    git checkout $G2OPY_REVISION # binding Eigen's Quaterniond with Pybind11 fix
     cd ..
     # copy local changes 
     rsync ./g2opy_changes/types_six_dof_expmap.h ./g2opy/python/types/sba/types_six_dof_expmap.h
@@ -129,7 +129,12 @@ cd g2opy
 if [ ! -f lib/g2o.cpython-*.so ]; then  
     make_buid_dir
     cd build
-    cmake .. $EXTERNAL_OPTION
+    arch=$(uname -m)
+    if [[ $arch == "arm"* ]] || [[ $arch == "aarch64" ]]; then
+       export ARCH=arm
+       export FLAGS="-O3 -march=armv8-a"
+    fi
+    cmake .. -DCMAKE_C_FLAGS="${FLAGS}" -DCMAKE_CXX_FLAGS="${FLAGS}" -DARCH="${ARCH}" ${EXTERNAL_OPTION}  # to avoid -msse4.2 flag
     make -j8
     cd ..
     #python3 setup.py install --user
